@@ -1,43 +1,29 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 // @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
 // core components
-import Quote from "components/Typography/Quote.js";
-import Muted from "components/Typography/Muted.js";
-import Primary from "components/Typography/Primary.js";
-import Info from "components/Typography/Info.js";
-import Success from "components/Typography/Success.js";
-import Warning from "components/Typography/Warning.js";
-import Danger from "components/Typography/Danger.js";
+import GridItem from "components/Grid/GridItem.js";
+import GridContainer from "components/Grid/GridContainer.js";
+import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
+import { CircularProgress } from "@material-ui/core";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PdfDocument } from "components/AdmitCard/AdmitCard.js";
 
 const styles = {
-  typo: {
-    paddingLeft: "25%",
-    marginBottom: "40px",
-    position: "relative",
-  },
-  note: {
-    fontFamily: '"Roboto", "Helvetica", "Arial", sans-serif',
-    bottom: "10px",
-    color: "#c0c1c2",
-    display: "block",
-    fontWeight: "400",
-    fontSize: "13px",
-    lineHeight: "13px",
-    left: "0",
-    marginLeft: "20px",
-    position: "absolute",
-    width: "260px",
-  },
   cardCategoryWhite: {
-    color: "rgba(255,255,255,.62)",
-    margin: "0",
-    fontSize: "14px",
-    marginTop: "0",
-    marginBottom: "0",
+    "&,& a,& a:hover,& a:focus": {
+      color: "rgba(255,255,255,.62)",
+      margin: "0",
+      fontSize: "14px",
+      marginTop: "0",
+      marginBottom: "0",
+    },
+    "& a,& a:hover,& a:focus": {
+      color: "#FFFFFF",
+    },
   },
   cardTitleWhite: {
     color: "#FFFFFF",
@@ -47,116 +33,163 @@ const styles = {
     fontFamily: "'Roboto', 'Helvetica', 'Arial', sans-serif",
     marginBottom: "3px",
     textDecoration: "none",
+    "& small": {
+      color: "#777",
+      fontSize: "65%",
+      fontWeight: "400",
+      lineHeight: "1",
+    },
   },
 };
 
 const useStyles = makeStyles(styles);
 
-export default function TypographyPage() {
+export default function TableList() {
+  const [isLoading, setLoading] = useState(true);
+  const [data, setData] = useState([]);
+  var result = [];
+  var male = [];
+  var female = [];
+  var boysRollNo = [];
+  var girlsRollNo = [];
+  var name = "";
+  var fatherName = "";
+  var email = "";
+  var group = "";
+  var button;
+  var gender = "";
+
+  const getMovies = async () => {
+    try {
+      const response = await fetch(
+        "https://sheet.best/api/sheets/8bb2d904-c1f4-4a91-8331-c738bd6a2478"
+      );
+      const json = await response.json();
+      setData(json);
+      console.log(isLoading);
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);
+      console.log(data);
+    }
+  };
+
+  useEffect(() => {
+    getMovies();
+  }, []);
+
   const classes = useStyles();
+
+  for (var i in data) {
+    const id = i;
+    name = data[i].yourname;
+    fatherName = data[i].fathername;
+    group = data[i].group;
+    email = data[i].email;
+    button = (
+      <PDFDownloadLink
+        document={<PdfDocument data={student} />}
+        fileName="admitcard.pdf"
+        style={{
+          textDecoration: "none",
+          padding: "10px",
+          color: "#4a4a4a",
+          backgroundColor: "#f2f2f2",
+          border: "1px solid #4a4a4a",
+        }}
+      >
+        {({ loading }) => (loading ? "Loading document..." : "Download Pdf")}
+      </PDFDownloadLink>
+    );
+    var student = [];
+    student.push(id);
+    student.push(name);
+    student.push(fatherName);
+    student.push(group);
+    student.push(email);
+    student.push(button);
+    console.log(student);
+    result.push(student);
+  }
+
+  console.log(result);
+
+  for (var j in data) {
+    gender = data[j].gender;
+    if (gender === "Male") {
+      male.push(gender);
+    } else {
+      female.push(gender);
+    }
+  }
+
+  function generateBoysRollNo() {
+    var count = 1;
+    for (var k in male) {
+      if (count < 10) {
+        const rollNo = "B0" + "" + k + "" + count;
+        boysRollNo.push(rollNo);
+        console.log(rollNo);
+      } else {
+        const rollNo = "B" + "" + count;
+        boysRollNo.push(rollNo);
+      }
+      count++;
+    }
+  }
+
+  function generateGirlsRollNo() {
+    var countg = 1;
+    var len = female.length;
+    while (len > 0) {
+      if (countg < 10) {
+        const rollNo = "G0" + "" + countg;
+        girlsRollNo.push(rollNo);
+      } else {
+        const rollNo = "G" + "" + countg;
+        girlsRollNo.push(rollNo);
+      }
+      len--;
+      countg++;
+    }
+  }
+
+  generateBoysRollNo();
+  generateGirlsRollNo();
+
+  console.log(male);
+  console.log(female);
+
   return (
-    <Card>
-      <CardHeader color="primary">
-        <h4 className={classes.cardTitleWhite}>Material Dashboard Heading</h4>
-        <p className={classes.cardCategoryWhite}>
-          Created using Roboto Font Family
-        </p>
-      </CardHeader>
-      <CardBody>
-        <div className={classes.typo}>
-          <div className={classes.note}>Header 1</div>
-          <h1>The Life of Material Dashboard</h1>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Header 2</div>
-          <h2>The Life of Material Dashboard</h2>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Header 3</div>
-          <h3>The Life of Material Dashboard</h3>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Header 4</div>
-          <h4>The Life of Material Dashboard</h4>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Header 5</div>
-          <h5>The Life of Material Dashboard</h5>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Header 6</div>
-          <h6>The Life of Material Dashboard</h6>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Paragraph</div>
-          <p>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers. I understand culture. I am
-            the nucleus. I think that’s a responsibility that I have, to push
-            possibilities, to show people, this is the level that things could
-            be at.
-          </p>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Quote</div>
-          <Quote
-            text="I will be the leader of a company that ends up being worth billions of dollars, because I got the answers. I understand culture. I am the nucleus. I think that’s a responsibility that I have, to push possibilities, to show people, this is the level that things could be at."
-            author=" Kanye West, Musician"
-          />
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Muted Text</div>
-          <Muted>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers...
-          </Muted>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Primary Text</div>
-          <Primary>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers...
-          </Primary>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Info Text</div>
-          <Info>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers...
-          </Info>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Success Text</div>
-          <Success>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers...
-          </Success>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Warning Text</div>
-          <Warning>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers...
-          </Warning>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Danger Text</div>
-          <Danger>
-            I will be the leader of a company that ends up being worth billions
-            of dollars, because I got the answers...
-          </Danger>
-        </div>
-        <div className={classes.typo}>
-          <div className={classes.note}>Small Tag</div>
-          <h2>
-            Header with small subtitle
-            <br />
-            <small>
-              Use {'"'}Small{'"'} tag for the headers
-            </small>
-          </h2>
-        </div>
-      </CardBody>
-    </Card>
+    <GridContainer>
+      <GridItem xs={12} sm={12} md={12}>
+        <Card>
+          <CardHeader color="danger">
+            <h4 className={classes.cardTitleWhite}>Self Assessment Test</h4>
+            <p className={classes.cardCategoryWhite}>
+              Current registrations for Self Assessment Test
+            </p>
+          </CardHeader>
+          <CardBody>
+            {isLoading ? (
+              <CircularProgress style={{ alignSelf: "center" }} />
+            ) : (
+              <Table
+                tableHeaderColor="primary"
+                tableHead={[
+                  "Name",
+                  "Father Name",
+                  "Group",
+                  "Fee Status",
+                  "Student ID",
+                ]}
+                tableData={result}
+              />
+            )}
+          </CardBody>
+        </Card>
+      </GridItem>
+    </GridContainer>
   );
 }

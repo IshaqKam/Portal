@@ -8,7 +8,10 @@ import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-import VerifyButton from "components/MyButtons/VerifyButton";
+//import VerifyButton from "components/MyButtons/VerifyButton";
+import { CircularProgress } from "@material-ui/core";
+import { PDFDownloadLink } from "@react-pdf/renderer";
+import { PdfDocument } from "components/AdmitCard/AdmitCard.js";
 
 const styles = {
   cardCategoryWhite: {
@@ -41,19 +44,17 @@ const styles = {
 };
 
 const useStyles = makeStyles(styles);
-
 export default function TableList() {
   const [isLoading, setLoading] = useState(true);
-  var [verified, setVerified] = useState(false);
+  //var verified = false;
+  const result = [];
   const [data, setData] = useState([]);
-  var result = [];
   var male = [];
   var female = [];
   var boysRollNo = [];
   var girlsRollNo = [];
   var name = "";
   var fatherName = "";
-  var contactNo = "";
   var email = "";
   var group = "";
   var button;
@@ -66,12 +67,10 @@ export default function TableList() {
       );
       const json = await response.json();
       setData(json);
-      console.log(isLoading);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
-      console.log(data);
     }
   };
 
@@ -80,48 +79,76 @@ export default function TableList() {
   }, []);
 
   const classes = useStyles();
-  const tableDat = [
-    ["Dakota Rice", "Niger", "Oud-Turnhout", "$36,738", "21"],
-    ["Minerva Hooper", "Curaçao", "Sinaai-Waas", "$23,789", "24"],
-    ["Sage Rodriguez", "Netherlands", "Baileux", "$56,142", "25"],
-    ["Philip Chaney", "Korea, South", "Overland Park", "$38,735", "26"],
-    ["Doris Greene", "Malawi", "Feldkirchen in Kärnten", "$63,542", "27"],
-    ["Mason Porter", "Chile", "Gloucester", "$78,615", "29"],
-  ];
 
   for (var i in data) {
-    const id = "Student" + i;
+    const id = i;
     name = data[i].name;
     fatherName = data[i].father_name;
-    contactNo = "0" + "" + data[i].contact_no;
     group = data[i].group;
     email = data[i].youremail;
-    button = <VerifyButton verify={verified} onVerify={verifyPayment} />;
+    button = (
+      <PDFDownloadLink
+        document={<PdfDocument data={student} />}
+        fileName="enrollmentcard.pdf"
+        style={{
+          textDecoration: "none",
+          padding: "10px",
+          color: "#4a4a4a",
+          backgroundColor: "#f2f2f2",
+          border: "1px solid #4a4a4a",
+        }}
+      >
+        {({ loading }) => (loading ? "Loading document..." : "Download Pdf")}
+      </PDFDownloadLink>
+    );
     var student = [];
+    student.push(id);
     student.push(name);
     student.push(fatherName);
-    student.push(contactNo);
     student.push(group);
     student.push(email);
     student.push(button);
-    student.push(verified);
-    student.push(id);
     console.log(student);
     result.push(student);
   }
 
-  function verifyPayment() {
-    // const elementIndex = student.findIndex((element) => element.id == id);
-    // let newData = [...std];
-    // newData[elementIndex] = {
-    //   ...newData[elementIndex],
-    //   verified: !newData[elementIndex].verified,
-    // };
-    setVerified(true);
-  }
+  // const [isShowDetails, setIsShowDetails] = useState([false, false, false, false, false, false, false, false])
+  // const [currentId, setCurrentId] = useState(false)
+  // const toggleShowDetails = (id)=> {
+  //   setCurrentId(id)
+  //   setIsShowDetails(
+  //       isShowDetails.map(item,j){
+  //         if(id === j){
+  //           return !item
+  //         } else {
+  //           return item
+  //       }
+  //     }
+  //   )
+  // }
 
-  console.log(result);
-  console.log(tableDat);
+  // function verifyPayment(index) {
+  //   const updatedStudent = result[index]; // Extract the record to update
+  //   updatedStudent[6] = true; //verified
+  //   setResult([
+  //     ...result.slice(0, index),
+  //     updatedStudent,
+  //     ...result.slice(index + 1),
+  //   ]);
+  //   console.log(updatedStudent);
+  // }
+  // const generatePDF = (index) => {
+  //   let roll_no;
+  //   const newStudent = data[index];
+  //   if (newStudent.gender == "Male") {
+  //     roll_no = boysRollNo[index];
+  //   } else {
+  //     roll_no = girlsRollNo[index];
+  //   }
+  //   console.log(roll_no);
+  //   //newStudent.push(roll_no);
+  //   console.log(newStudent);
+  // };
 
   for (var j in data) {
     gender = data[j].gender;
@@ -136,15 +163,12 @@ export default function TableList() {
     var count = 1;
     for (var k in male) {
       if (count < 10) {
-        const rollNo = "B0" + "" + count;
+        const rollNo = "B0" + "" + k + "" + count;
         boysRollNo.push(rollNo);
-        console.log(rollNo);
       } else {
         const rollNo = "B" + "" + count;
         boysRollNo.push(rollNo);
-        console.log(rollNo);
       }
-      console.log(k);
       count++;
     }
   }
@@ -156,11 +180,9 @@ export default function TableList() {
       if (countg < 10) {
         const rollNo = "G0" + "" + countg;
         girlsRollNo.push(rollNo);
-        console.log(rollNo);
       } else {
         const rollNo = "G" + "" + countg;
         girlsRollNo.push(rollNo);
-        console.log(rollNo);
       }
       len--;
       countg++;
@@ -170,31 +192,33 @@ export default function TableList() {
   generateBoysRollNo();
   generateGirlsRollNo();
 
-  console.log(male);
-  console.log(female);
-
   return (
     <GridContainer>
       <GridItem xs={12} sm={12} md={12}>
         <Card>
-          <CardHeader color="primary">
+          <CardHeader color="warning">
             <h4 className={classes.cardTitleWhite}>Classes Data</h4>
             <p className={classes.cardCategoryWhite}>
               Here is the data for the crash classes
             </p>
           </CardHeader>
           <CardBody>
-            <Table
-              tableHeaderColor="primary"
-              tableHead={[
-                "Name",
-                "Father Name",
-                "Contact No",
-                "Group",
-                "Email",
-              ]}
-              tableData={result}
-            />
+            {isLoading ? (
+              <CircularProgress style={{ alignSelf: "center" }} />
+            ) : (
+              <Table
+                tableHeaderColor="primary"
+                tableHead={[
+                  "S.No",
+                  "Name",
+                  "Father Name",
+                  "Group",
+                  "Email",
+                  "Admit Card",
+                ]}
+                tableData={result}
+              />
+            )}
           </CardBody>
         </Card>
       </GridItem>

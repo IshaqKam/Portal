@@ -198,7 +198,7 @@ At present, we officially aim to support the last two versions of the following 
 - License Agreement: https://www.creative-tim.com/license
 - Support: https://www.creative-tim.com/contact-us
 - Issues: [Github Issues Page](https://github.com/creativetimofficial/material-dashboard-react/issues)
-- [Material Kit React - For Front End Development](https://www.creative-tim.com/product/material-kit-react?ref=github-mdr-free)
+- [Material Kit React - For Front End Development](https://www.creative-tim.com/product/material-dashboard-react?ref=github-mdr-free)
 
 ## Reporting Issues
 We use GitHub Issues as the official bug tracker for the Material Dashboard React. Here are some advices for our users that want to report an issue:

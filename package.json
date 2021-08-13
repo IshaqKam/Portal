@@ -1,12 +1,12 @@
 {
-  "name": "material-dashboard-react",
+  "name": "admin-portal",
   "version": "1.10.0",
-  "description": "Material Dashboard React. Coded by Creative Tim",
   "private": false,
   "main": "dist/index.js",
   "dependencies": {
-    "@material-ui/core": "4.11.4",
+    "@material-ui/core": "^4.11.4",
     "@material-ui/icons": "^4.11.2",
+    "@react-pdf/renderer": "^2.0.18",
     "axios": "^0.21.1",
     "chartist": "0.10.1",
     "classnames": "2.3.1",
