@@ -29,8 +29,16 @@ export default function LoginPage(props) {
   setTimeout(function () {
     setCardAnimation("");
   }, 700);
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const classes = useStyles();
   const { ...rest } = props;
+  const validation = () => {
+    if (email === "ishkam2001@gmail.com" && password === "abcd1234") {
+      console.log("True");
+    }
+  };
+  validation();
   return (
     <div>
       <Header absolute color="transparent" brand="NED Jamiat" {...rest} />
@@ -57,6 +65,7 @@ export default function LoginPage(props) {
                       formControlProps={{
                         fullWidth: true,
                       }}
+                      onChange={setEmail}
                       inputProps={{
                         type: "email",
                         endAdornment: (
@@ -72,6 +81,7 @@ export default function LoginPage(props) {
                       formControlProps={{
                         fullWidth: true,
                       }}
+                      onChange={setPassword}
                       inputProps={{
                         type: "password",
                         endAdornment: (
