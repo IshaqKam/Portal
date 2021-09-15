@@ -5,8 +5,8 @@ import Unarchive from "@material-ui/icons/Unarchive";
 // core components/views for Admin layout
 import DashboardPage from "views/Dashboard/Dashboard.js";
 import LoginPage from "views/LoginPage/LoginPage";
-import TableList from "views/TableList/TableList.js";
-import Typography from "views/Typography/Typography.js";
+import CrashClasses from "views/CrashClasses/CrashClasses";
+import SAT from "views/SelfAssessmentTest/SelfAssessmentTest";
 // core components/views for RTL layout
 
 const dashboardRoutes = [
@@ -23,15 +23,15 @@ const dashboardRoutes = [
     name: "Crash Prepration Course",
     rtlName: "قائمة الجدول",
     icon: "content_paste",
-    component: TableList,
+    component: CrashClasses,
     layout: "/admin",
   },
   {
-    path: "/sat",
+    path: "/self-assessment-test",
     name: "Self Assessment Test",
     rtlName: "طباعة",
     icon: LibraryBooks,
-    component: Typography,
+    component: SAT,
     layout: "/admin",
   },
   {

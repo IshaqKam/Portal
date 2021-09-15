@@ -1,17 +1,14 @@
 import React, { useEffect, useState } from "react";
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-// core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardBody from "components/Card/CardBody.js";
-//import VerifyButton from "components/MyButtons/VerifyButton";
 import { CircularProgress } from "@material-ui/core";
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { PdfDocument } from "components/AdmitCard/AdmitCard.js";
+import { PdfDocument } from "components/EnrollmentCard/EnrollmentCard";
 
 const styles = {
   cardCategoryWhite: {
@@ -46,19 +43,18 @@ const styles = {
 const useStyles = makeStyles(styles);
 export default function TableList() {
   const [isLoading, setLoading] = useState(true);
-  //var verified = false;
   const result = [];
   const [data, setData] = useState([]);
-  var male = [];
-  var female = [];
-  var boysRollNo = [];
-  var girlsRollNo = [];
-  var name = "";
-  var fatherName = "";
-  var email = "";
-  var group = "";
-  var button;
-  var gender = "";
+  let male = [];
+  let female = [];
+  let boysRollNo = [];
+  let girlsRollNo = [];
+  let name = "";
+  let fatherName = "";
+  let email = "";
+  let group = "";
+  let button;
+  let gender = "";
 
   const getMovies = async () => {
     try {
@@ -79,9 +75,9 @@ export default function TableList() {
   }, []);
 
   const classes = useStyles();
-
-  for (var i in data) {
-    const id = i;
+  let len = data.length;
+  for (let i = 0; i < len; i++) {
+    const id = i + 1;
     name = data[i].name;
     fatherName = data[i].father_name;
     group = data[i].group;
@@ -101,54 +97,10 @@ export default function TableList() {
         {({ loading }) => (loading ? "Loading document..." : "Download Pdf")}
       </PDFDownloadLink>
     );
-    var student = [];
-    student.push(id);
-    student.push(name);
-    student.push(fatherName);
-    student.push(group);
-    student.push(email);
-    student.push(button);
-    console.log(student);
+    let student = [];
+    student.push.apply(student, [id, name, fatherName, group, email, button]);
     result.push(student);
   }
-
-  // const [isShowDetails, setIsShowDetails] = useState([false, false, false, false, false, false, false, false])
-  // const [currentId, setCurrentId] = useState(false)
-  // const toggleShowDetails = (id)=> {
-  //   setCurrentId(id)
-  //   setIsShowDetails(
-  //       isShowDetails.map(item,j){
-  //         if(id === j){
-  //           return !item
-  //         } else {
-  //           return item
-  //       }
-  //     }
-  //   )
-  // }
-
-  // function verifyPayment(index) {
-  //   const updatedStudent = result[index]; // Extract the record to update
-  //   updatedStudent[6] = true; //verified
-  //   setResult([
-  //     ...result.slice(0, index),
-  //     updatedStudent,
-  //     ...result.slice(index + 1),
-  //   ]);
-  //   console.log(updatedStudent);
-  // }
-  // const generatePDF = (index) => {
-  //   let roll_no;
-  //   const newStudent = data[index];
-  //   if (newStudent.gender == "Male") {
-  //     roll_no = boysRollNo[index];
-  //   } else {
-  //     roll_no = girlsRollNo[index];
-  //   }
-  //   console.log(roll_no);
-  //   //newStudent.push(roll_no);
-  //   console.log(newStudent);
-  // };
 
   for (var j in data) {
     gender = data[j].gender;

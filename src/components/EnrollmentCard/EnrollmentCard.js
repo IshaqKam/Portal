@@ -177,7 +177,7 @@ export function PdfDocument(props) {
                   <Text style={styles.title}>CRASH CLASSES 2021</Text>
                   <Text style={styles.title2}>STUDY AID PROJECT NED</Text>
                   <View style={{ backgroundColor: "#000" }}>
-                    <Text style={styles.title3}>ADMIT CARD</Text>
+                    <Text style={styles.title3}>ENROLLMENT CARD</Text>
                   </View>
                 </View>
               </View>

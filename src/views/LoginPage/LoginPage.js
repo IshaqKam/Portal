@@ -31,11 +31,14 @@ export default function LoginPage(props) {
   }, 700);
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
+  let isProtected = false;
   const classes = useStyles();
   const { ...rest } = props;
   const validation = () => {
     if (email === "ishkam2001@gmail.com" && password === "abcd1234") {
-      console.log("True");
+      localStorage.setItem("token", "123");
+      isProtected = true;
+      console.log(isProtected);
     }
   };
   validation();
@@ -96,11 +99,29 @@ export default function LoginPage(props) {
                     />
                   </CardBody>
                   <CardFooter className={classes.cardFooter}>
-                    <Link to={"/admin"} className={classes.link}>
-                      <Button simple color="primary" size="lg">
-                        Login
-                      </Button>
-                    </Link>
+                    {isProtected ? (
+                      <Link to={"/admin"} className={classes.link}>
+                        <Button
+                          simple
+                          color="primary"
+                          size="lg"
+                          onClick={validation}
+                        >
+                          Login
+                        </Button>
+                      </Link>
+                    ) : (
+                      <Link to={"/admin"} className={classes.link}>
+                        <Button
+                          simple
+                          color="primary"
+                          size="lg"
+                          onChange={() => {}}
+                        >
+                          Login
+                        </Button>
+                      </Link>
+                    )}
                   </CardFooter>
                 </form>
               </Card>

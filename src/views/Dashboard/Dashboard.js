@@ -16,12 +16,10 @@ import Danger from "components/Typography/Danger.js";
 import Card from "components/Card/Card.js";
 import CardHeader from "components/Card/CardHeader.js";
 import CardIcon from "components/Card/CardIcon.js";
-//import CardBody from "components/Card/CardBody.js";
 import CardFooter from "components/Card/CardFooter.js";
 import Button from "components/CustomButtons/Button.js";
 
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
-//import { datalength } from "views/TableList/TableList.js";
 
 const useStyles = makeStyles(styles);
 
@@ -72,7 +70,7 @@ export default function Dashboard() {
                 <DateRange />
                 Last 24 Hours
               </div>
-              <Link to={"/sat"} className={classes.link}>
+              <Link to={"self-assessment-test"} className={classes.link}>
                 <Button color="danger">View SAT Data</Button>
               </Link>
             </CardFooter>

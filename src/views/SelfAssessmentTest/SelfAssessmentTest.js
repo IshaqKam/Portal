@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-// @material-ui/core components
 import { makeStyles } from "@material-ui/core/styles";
-// core components
 import GridItem from "components/Grid/GridItem.js";
 import GridContainer from "components/Grid/GridContainer.js";
 import Table from "components/Table/Table.js";
@@ -47,17 +45,17 @@ const useStyles = makeStyles(styles);
 export default function TableList() {
   const [isLoading, setLoading] = useState(true);
   const [data, setData] = useState([]);
-  var result = [];
-  var male = [];
-  var female = [];
-  var boysRollNo = [];
-  var girlsRollNo = [];
-  var name = "";
-  var fatherName = "";
-  var email = "";
-  var group = "";
-  var button;
-  var gender = "";
+  let result = [];
+  let male = [];
+  let female = [];
+  let boysRollNo = [];
+  let girlsRollNo = [];
+  let name = "";
+  let fatherName = "";
+  let email = "";
+  let group = "";
+  let button;
+  let gender = "";
 
   const getMovies = async () => {
     try {
@@ -66,12 +64,10 @@ export default function TableList() {
       );
       const json = await response.json();
       setData(json);
-      console.log(isLoading);
     } catch (error) {
       console.error(error);
     } finally {
       setLoading(false);
-      console.log(data);
     }
   };
 
@@ -80,9 +76,9 @@ export default function TableList() {
   }, []);
 
   const classes = useStyles();
-
-  for (var i in data) {
-    const id = i;
+  let len = data.length;
+  for (let i = 0; i < len; i++) {
+    const id = i + 1;
     name = data[i].yourname;
     fatherName = data[i].fathername;
     group = data[i].group;
@@ -102,20 +98,12 @@ export default function TableList() {
         {({ loading }) => (loading ? "Loading document..." : "Download Pdf")}
       </PDFDownloadLink>
     );
-    var student = [];
-    student.push(id);
-    student.push(name);
-    student.push(fatherName);
-    student.push(group);
-    student.push(email);
-    student.push(button);
-    console.log(student);
+    let student = [];
+    student.push.apply(student, [id, name, fatherName, group, email, button]);
     result.push(student);
   }
 
-  console.log(result);
-
-  for (var j in data) {
+  for (let j in data) {
     gender = data[j].gender;
     if (gender === "Male") {
       male.push(gender);
@@ -125,8 +113,8 @@ export default function TableList() {
   }
 
   function generateBoysRollNo() {
-    var count = 1;
-    for (var k in male) {
+    let count = 1;
+    for (let k in male) {
       if (count < 10) {
         const rollNo = "B0" + "" + k + "" + count;
         boysRollNo.push(rollNo);
@@ -140,8 +128,8 @@ export default function TableList() {
   }
 
   function generateGirlsRollNo() {
-    var countg = 1;
-    var len = female.length;
+    let countg = 1;
+    let len = female.length;
     while (len > 0) {
       if (countg < 10) {
         const rollNo = "G0" + "" + countg;
