@@ -9,6 +9,10 @@ import {
 } from "@react-pdf/renderer";
 import PropTypes from "prop-types";
 import logo from "assets/img/as.png";
+import signImg from "assets/img/signature.png";
+import ijtLogo from "assets/img/ijt.png";
+import avatar from "assets/img/avatar.jpg";
+import qrCode from "assets/img/qrCode.jpeg";
 
 const styles = StyleSheet.create({
   page: {
@@ -23,6 +27,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fffff5",
     display: "flex",
     padding: 5,
+    marginTop: 10,
   },
   card: {
     display: "flex",
@@ -32,6 +37,7 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignContent: "center",
+    margin: 5,
     marginLeft: 40,
     marginBottom: 10,
   },
@@ -47,12 +53,15 @@ const styles = StyleSheet.create({
     textDecoration: "underline",
     fontWeight: "bold",
     alignSelf: "center",
+    marginTop: 5,
   },
   title2: {
     fontSize: 25,
     marginBottom: 5,
-    fontWeight: "bold",
+    fontWeight: "black",
     alignSelf: "center",
+    color: "#666",
+    marginTop: 5,
   },
   title3: {
     fontSize: 30,
@@ -60,11 +69,12 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontWeight: "bold",
     margin: 5,
+    marginTop: 5,
   },
   overviewContainer: {
     flexDirection: "row-reverse",
     marginRight: 40,
-    marginTop: 10,
+    marginTop: 15,
     borderWidth: 1,
     padding: 1,
     alignSelf: "flex-end",
@@ -90,7 +100,7 @@ const styles = StyleSheet.create({
   detailsContainer: {
     flexDirection: "row",
     marginRight: 20,
-    marginTop: 15,
+    marginTop: 20,
     marginLeft: 20,
     borderWidth: 1,
     padding: 2,
@@ -100,6 +110,7 @@ const styles = StyleSheet.create({
   details: {
     fontSize: 10,
     padding: 5,
+    marginTop: 5,
     borderWidth: 1,
     width: "200",
     height: "25",
@@ -122,49 +133,79 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     alignSelf: "center",
   },
-  lastContainer: {
+  qrCodeContainer: {
+    marginTop: 10,
     flexDirection: "row",
-    alignContent: "space-between",
-    marginTop: 20,
+    alignItems: "center",
+    width: "70%",
   },
-  instructon: {
-    flexDirection: "column",
+  qrCodeImage: {
+    width: 90,
+    height: 90,
   },
-  instruct: {
-    fontSize: 10,
+  qrCodeText: {
+    width: "70%",
     marginLeft: 5,
-    padding: 2,
+    padding: 4,
+    fontSize: 14,
+    textAlign: "center",
   },
   signature: {
     flexDirection: "column",
     alignItems: "center",
-    marginLeft: 20,
+    marginTop: 35,
   },
   signimg: {
     height: 50,
     width: 100,
   },
+  cDetailsContainer: {
+    flexDirection: "column",
+    marginTop: 30,
+  },
+  cDetails: {
+    fontSize: 11,
+    fontWeight: "medium",
+    marginLeft: 10,
+    marginTop: 5,
+  },
+  lastContainer: {
+    flexDirection: "row",
+    alignContent: "space-between",
+    marginTop: 30,
+  },
+  instructon: {
+    flexDirection: "column",
+    marginTop: 10,
+    marginLeft: 10,
+  },
+  instruct: {
+    fontSize: 10,
+    marginLeft: 5,
+    padding: 2,
+    marginTop: 5,
+  },
   detailsFooter: {
     flexDirection: "row",
+    justifyContent: "flex-end",
     margin: 25,
-    marginTop: 25,
+    marginTop: 50,
     alignSelf: "center",
   },
   footerimg: {
-    height: 40,
-    width: 40,
-    marginBottom: 5,
+    height: 50,
+    width: 50,
     alignSelf: "center",
   },
   footer: {
-    fontSize: 30,
+    fontSize: 35,
     padding: 5,
-    fontWeight: "semibold",
+    fontWeight: "black",
   },
 });
 
 export function PdfDocument(props) {
-  console.log("pdf props", props.data);
+  const student = props.data;
   return (
     <Document>
       <Page wrap={true} style={styles.page}>
@@ -177,12 +218,16 @@ export function PdfDocument(props) {
                   <Text style={styles.title}>CRASH CLASSES 2021</Text>
                   <Text style={styles.title2}>STUDY AID PROJECT NED</Text>
                   <View style={{ backgroundColor: "#000" }}>
-                    <Text style={styles.title3}>ENROLLMENT CARD</Text>
+                    <Text style={styles.title3}>ENROLMENT CARD</Text>
                   </View>
                 </View>
               </View>
               <View style={styles.overviewContainer}>
-                <Text style={styles.roll_no}>B-001</Text>
+                <Text style={styles.roll_no}>
+                  {student.gender === "Male"
+                    ? `B-${student[0].id}`
+                    : `G-${student[0].id}`}
+                </Text>
                 <Text style={styles.seatno}>Seat Number: </Text>
               </View>
               <View style={styles.conatain}>
@@ -194,15 +239,49 @@ export function PdfDocument(props) {
                     <Text style={styles.names}>Email: </Text>
                   </View>
                   <View style={{ flexDirection: "column" }}>
-                    <Text style={styles.details}>Ishaq Kamran</Text>
-                    <Text style={styles.details}>Kamran Zakaria</Text>
-                    <Text style={styles.details}>Pre-Engineering</Text>
-                    <Text style={styles.details}>abcd12@email.com</Text>
+                    <Text style={styles.details}>{student[0].name}</Text>
+                    <Text style={styles.details}>{student[0].fatherName}</Text>
+                    <Text style={styles.details}>{student[0].group}</Text>
+                    <Text style={styles.details}>{student[0].email}</Text>
                   </View>
                 </View>
                 <View>
-                  <Image style={styles.profileimg} source={"boys.png"} />
+                  <Image style={styles.profileimg} source={avatar} />
                 </View>
+              </View>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View style={styles.qrCodeContainer}>
+                  <Image style={styles.qrCodeImage} source={qrCode} />
+                  <Text style={styles.qrCodeText}>
+                    To get the pinpoint location of the venue on Google Maps,
+                    scan this code.
+                  </Text>
+                </View>
+                <View style={styles.signature}>
+                  <Image style={styles.signimg} source={signImg} />
+                  <View style={{ alignItems: "center" }}>
+                    <Text style={{ fontSize: 15 }}>Incharge</Text>
+                    <Text style={{ fontSize: 15 }}>Crash Prepration Class</Text>
+                  </View>
+                </View>
+              </View>
+              <View style={styles.cDetailsContainer}>
+                <Text style={styles.cDetails}>
+                  DURATION:{" "}
+                  <Text style={{ fontSize: 12 }}>
+                    16th of July to 29th of July
+                  </Text>
+                </Text>
+                <Text style={styles.cDetails}>
+                  TIMINGS: <Text style={{ fontSize: 12 }}> 4 pm to 7 pm</Text>
+                </Text>
+                <Text style={styles.cDetails}>
+                  VENUE:{" "}
+                  <Text style={{ fontSize: 12 }}>
+                    We Trust(Education), adjacent to Crescent Academy, Gulshan
+                    Chowrangi, Karachi
+                  </Text>
+                </Text>
               </View>
               <View style={styles.lastContainer}>
                 <View style={styles.instructon}>
@@ -222,16 +301,9 @@ export function PdfDocument(props) {
                     lectures.
                   </Text>
                 </View>
-                <View style={styles.signature}>
-                  <Image style={styles.signimg} source={"signature.png"} />
-                  <View style={{ alignItems: "center" }}>
-                    <Text style={{ fontSize: 15 }}>Incharge</Text>
-                    <Text style={{ fontSize: 15 }}>Crash Prepration Class</Text>
-                  </View>
-                </View>
               </View>
               <View style={styles.detailsFooter}>
-                <Image style={styles.footerimg} source={"ijt.png"} />
+                <Image style={styles.footerimg} source={ijtLogo} />
                 <Text style={styles.footer}> Islami Jamiat Talaba NED</Text>
               </View>
             </View>

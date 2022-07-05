@@ -45,21 +45,18 @@ export default function TableList() {
   const [isLoading, setLoading] = useState(true);
   const result = [];
   const [data, setData] = useState([]);
-  let male = [];
-  let female = [];
-  let boysRollNo = [];
-  let girlsRollNo = [];
+  // const [file, setFile] = useState();
+  // const [image, setImage] = useState();
   let name = "";
   let fatherName = "";
   let email = "";
   let group = "";
   let button;
-  let gender = "";
 
   const getMovies = async () => {
     try {
       const response = await fetch(
-        "https://sheet.best/api/sheets/405ce5b7-f940-4735-83aa-f641c7ebf514"
+        "https://sheet.best/api/sheets/2a3cdcdc-f33a-4ec2-8508-be11f59559f5"
       );
       const json = await response.json();
       setData(json);
@@ -74,17 +71,45 @@ export default function TableList() {
     getMovies();
   }, []);
 
+  console.log(data);
+
+  const mArr = data.filter(function (item) {
+    if (item.gender === "Male") {
+      return true;
+    }
+  });
+
+  const fArr = data.filter(function (item) {
+    if (item.gender === "Female") {
+      return true;
+    }
+  });
+
   const classes = useStyles();
   let len = data.length;
   for (let i = 0; i < len; i++) {
     const id = i + 1;
-    name = data[i].name;
-    fatherName = data[i].father_name;
+    name = data[i].yourname;
+    fatherName = data[i].fathername;
     group = data[i].group;
-    email = data[i].youremail;
+    email = data[i].email;
+    let index = 0;
+    const stObj = {};
+    if (data[i].gender === "Male") {
+      index = mArr.findIndex((item) => item.name === data[i].name);
+    } else {
+      index = fArr.findIndex((item) => item.name === data[i].name);
+    }
+    stObj["id"] = index + 1;
+    stObj["name"] = name;
+    stObj["fatherName"] = fatherName;
+    stObj["group"] = group;
+    stObj["email"] = email;
+    stObj["gender"] = data[i].gender;
+    const stArr = [stObj];
     button = (
       <PDFDownloadLink
-        document={<PdfDocument data={student} />}
+        document={<PdfDocument data={stArr} />}
         fileName="enrollmentcard.pdf"
         style={{
           textDecoration: "none",
@@ -97,52 +122,33 @@ export default function TableList() {
         {({ loading }) => (loading ? "Loading document..." : "Download Pdf")}
       </PDFDownloadLink>
     );
+    // const button2 = (
+    //   <>
+    //     <Input
+    //       accept="image/*"
+    //       id="contained-button-file"
+    //       multiple
+    //       type="file"
+    //       onChange={(e) => setFile(e.target.files[0])}
+    //     />
+    //     <Button variant="contained" component="span" onClick={readFile}>
+    //       Upload
+    //     </Button>
+    //   </>
+    // );
     let student = [];
     student.push.apply(student, [id, name, fatherName, group, email, button]);
     result.push(student);
   }
 
-  for (var j in data) {
-    gender = data[j].gender;
-    if (gender === "Male") {
-      male.push(gender);
-    } else {
-      female.push(gender);
-    }
-  }
-
-  function generateBoysRollNo() {
-    var count = 1;
-    for (var k in male) {
-      if (count < 10) {
-        const rollNo = "B0" + "" + k + "" + count;
-        boysRollNo.push(rollNo);
-      } else {
-        const rollNo = "B" + "" + count;
-        boysRollNo.push(rollNo);
-      }
-      count++;
-    }
-  }
-
-  function generateGirlsRollNo() {
-    var countg = 1;
-    var len = female.length;
-    while (len > 0) {
-      if (countg < 10) {
-        const rollNo = "G0" + "" + countg;
-        girlsRollNo.push(rollNo);
-      } else {
-        const rollNo = "G" + "" + countg;
-        girlsRollNo.push(rollNo);
-      }
-      len--;
-      countg++;
-    }
-  }
-
-  generateBoysRollNo();
-  generateGirlsRollNo();
+  // const readFile = () => {
+  //   var reader = new FileReader();
+  //   reader.onload = function (event) {
+  //     // The file's text will be printed here
+  //     setImage(event.target.result);
+  //   };
+  //   reader.readAsDataURL(file);
+  // };
 
   return (
     <GridContainer>
