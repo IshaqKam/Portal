@@ -93,7 +93,7 @@ export default function TableList() {
     fatherName = data[i].fathername;
     group = data[i].group;
     email = data[i].email;
-    let index = 0;
+    let index = 100;
     const stObj = {};
     if (data[i].gender === "Male") {
       index = mArr.findIndex((item) => item.name === data[i].name);

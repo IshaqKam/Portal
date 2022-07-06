@@ -215,7 +215,7 @@ export function PdfDocument(props) {
               <View style={styles.headercontainer}>
                 <Image style={styles.image} source={logo} />
                 <View style={{ flexDirection: "column", padding: 5 }}>
-                  <Text style={styles.title}>CRASH CLASSES 2021</Text>
+                  <Text style={styles.title}>CRASH CLASSES 2022</Text>
                   <Text style={styles.title2}>STUDY AID PROJECT NED</Text>
                   <View style={{ backgroundColor: "#000" }}>
                     <Text style={styles.title3}>ENROLMENT CARD</Text>
@@ -261,7 +261,9 @@ export function PdfDocument(props) {
                   <Image style={styles.signimg} source={signImg} />
                   <View style={{ alignItems: "center" }}>
                     <Text style={{ fontSize: 15 }}>Incharge</Text>
-                    <Text style={{ fontSize: 15 }}>Crash Prepration Class</Text>
+                    <Text style={{ fontSize: 15 }}>
+                      Crash Preparation Class
+                    </Text>
                   </View>
                 </View>
               </View>
