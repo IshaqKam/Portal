@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 
 // core components
 import Admin from "layouts/Admin.js";
@@ -14,8 +14,8 @@ ReactDOM.render(
     <Switch>
       <Route path="/admin" component={Admin} />
       <Route path="/rtl" component={RTL} />
-      <Route path="/login" component={LoginPage} />
-      <Redirect from="/" to="/login" />
+      <Route path="/" component={LoginPage} />
+      {/* <Redirect from="/" to="/login" /> */}
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")
