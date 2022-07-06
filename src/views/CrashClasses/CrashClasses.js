@@ -100,7 +100,7 @@ export default function TableList() {
     } else {
       index = fArr.findIndex((item) => item.name === data[i].name);
     }
-    stObj["id"] = index + 1;
+    stObj["id"] = index + 101;
     stObj["name"] = name;
     stObj["fatherName"] = fatherName;
     stObj["group"] = group;
