@@ -15,7 +15,6 @@ ReactDOM.render(
       <Route path="/admin" component={Admin} />
       <Route path="/rtl" component={RTL} />
       <Route path="/" component={LoginPage} />
-      {/* <Redirect from="/" to="/login" /> */}
     </Switch>
   </BrowserRouter>,
   document.getElementById("root")
