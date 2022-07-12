@@ -11,7 +11,7 @@ import PropTypes from "prop-types";
 import logo from "assets/img/as.png";
 import signImg from "assets/img/signature.png";
 import ijtLogo from "assets/img/ijt.png";
-import avatar from "assets/img/avatar.jpg";
+// import avatar from "assets/img/avatar.jpg";
 import qrCode from "assets/img/qrCode.jpeg";
 
 const styles = StyleSheet.create({
@@ -127,10 +127,13 @@ const styles = StyleSheet.create({
     margin: 1,
   },
   profileimg: {
-    height: 120,
+    height: 150,
     width: 130,
     margin: 15,
     marginLeft: 20,
+    flexDirection: "column-reverse",
+    alignItems: "flex-start",
+    border: "2px solid black",
     alignSelf: "center",
   },
   qrCodeContainer: {
@@ -153,7 +156,7 @@ const styles = StyleSheet.create({
   signature: {
     flexDirection: "column",
     alignItems: "center",
-    marginTop: 35,
+    marginTop: 25,
   },
   signimg: {
     height: 50,
@@ -189,7 +192,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     margin: 25,
-    marginTop: 50,
+    marginTop: 30,
     alignSelf: "center",
   },
   footerimg: {
@@ -225,8 +228,8 @@ export function PdfDocument(props) {
               <View style={styles.overviewContainer}>
                 <Text style={styles.roll_no}>
                   {student.gender === "Male"
-                    ? `B-${student[0].id}`
-                    : `G-${student[0].id}`}
+                    ? `B-${student.id}`
+                    : `G-${student.id}`}
                 </Text>
                 <Text style={styles.seatno}>Seat Number: </Text>
               </View>
@@ -239,14 +242,24 @@ export function PdfDocument(props) {
                     <Text style={styles.names}>Email: </Text>
                   </View>
                   <View style={{ flexDirection: "column" }}>
-                    <Text style={styles.details}>{student[0].name}</Text>
-                    <Text style={styles.details}>{student[0].fatherName}</Text>
-                    <Text style={styles.details}>{student[0].group}</Text>
-                    <Text style={styles.details}>{student[0].email}</Text>
+                    <Text style={styles.details}>{student.name}</Text>
+                    <Text style={styles.details}>{student.fatherName}</Text>
+                    <Text style={styles.details}>{student.group}</Text>
+                    <Text style={styles.details}>{student.email}</Text>
                   </View>
                 </View>
-                <View>
-                  <Image style={styles.profileimg} source={avatar} />
+                <View style={styles.profileimg}>
+                  {/* <Image style={styles.profileimg} source={avatar} /> */}
+                  <Text
+                    style={{
+                      fontSize: "12",
+                      padding: 7,
+                      // textAlign: "justify",
+                      marginTop: 40,
+                    }}
+                  >
+                    Please attach your recent photograph here (for boys only)
+                  </Text>
                 </View>
               </View>
               <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -262,7 +275,7 @@ export function PdfDocument(props) {
                   <View style={{ alignItems: "center" }}>
                     <Text style={{ fontSize: 15 }}>Incharge</Text>
                     <Text style={{ fontSize: 15 }}>
-                      Crash Preparation Class
+                      Crash Preparation Classes
                     </Text>
                   </View>
                 </View>
@@ -280,7 +293,7 @@ export function PdfDocument(props) {
                 <Text style={styles.cDetails}>
                   VENUE:{" "}
                   <Text style={{ fontSize: 12 }}>
-                    We Trust(Education), adjacent to Crescent Academy, Gulshan
+                    We Trust Academy, adjacent to Crescent Academy, Gulshan
                     Chowrangi, Karachi
                   </Text>
                 </Text>
@@ -289,7 +302,8 @@ export function PdfDocument(props) {
                 <View style={styles.instructon}>
                   <Text>Instructions:</Text>
                   <Text style={styles.instruct}>
-                    1. Follow the SOPs and wear FACE MASKs during the class.
+                    1. Attach a passport size photograph to the printed copy of
+                    your Enrollment Card.
                   </Text>
                   <Text style={styles.instruct}>
                     2. Must bring a printed copy of your ENROLMENT CARD in each

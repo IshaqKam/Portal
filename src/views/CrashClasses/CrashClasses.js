@@ -45,8 +45,6 @@ export default function TableList() {
   const [isLoading, setLoading] = useState(true);
   const result = [];
   const [data, setData] = useState([]);
-  // const [file, setFile] = useState();
-  // const [image, setImage] = useState();
   let name = "";
   let fatherName = "";
   let email = "";
@@ -55,9 +53,7 @@ export default function TableList() {
 
   const getMovies = async () => {
     try {
-      const response = await fetch(
-        "https://sheet.best/api/sheets/2a3cdcdc-f33a-4ec2-8508-be11f59559f5"
-      );
+      const response = await fetch("https://sheetdb.io/api/v1/r1j4tmivccffp");
       const json = await response.json();
       setData(json);
     } catch (error) {
@@ -70,8 +66,6 @@ export default function TableList() {
   useEffect(() => {
     getMovies();
   }, []);
-
-  console.log(data);
 
   const mArr = data.filter(function (item) {
     if (item.gender === "Male") {
@@ -93,23 +87,25 @@ export default function TableList() {
     fatherName = data[i].fathername;
     group = data[i].group;
     email = data[i].email;
-    let index = 100;
-    const stObj = {};
+    let index = 0;
     if (data[i].gender === "Male") {
-      index = mArr.findIndex((item) => item.name === data[i].name);
+      index = mArr.findIndex((item) => item.yourname === data[i].yourname);
     } else {
-      index = fArr.findIndex((item) => item.name === data[i].name);
+      index = fArr.findIndex((item) => item.yourname === data[i].yourname);
     }
-    stObj["id"] = index + 101;
-    stObj["name"] = name;
-    stObj["fatherName"] = fatherName;
-    stObj["group"] = group;
-    stObj["email"] = email;
-    stObj["gender"] = data[i].gender;
-    const stArr = [stObj];
+    const stObj = data.map((item) => {
+      return {
+        id: index + 101,
+        name: item.yourname,
+        fatherName: item.fathername,
+        group: item.group,
+        email: item.email,
+        gender: item.gender,
+      };
+    });
     button = (
       <PDFDownloadLink
-        document={<PdfDocument data={stArr} />}
+        document={<PdfDocument data={stObj[i]} />}
         fileName="enrollmentcard.pdf"
         style={{
           textDecoration: "none",
@@ -122,33 +118,11 @@ export default function TableList() {
         {({ loading }) => (loading ? "Loading document..." : "Download Pdf")}
       </PDFDownloadLink>
     );
-    // const button2 = (
-    //   <>
-    //     <Input
-    //       accept="image/*"
-    //       id="contained-button-file"
-    //       multiple
-    //       type="file"
-    //       onChange={(e) => setFile(e.target.files[0])}
-    //     />
-    //     <Button variant="contained" component="span" onClick={readFile}>
-    //       Upload
-    //     </Button>
-    //   </>
-    // );
+
     let student = [];
     student.push.apply(student, [id, name, fatherName, group, email, button]);
     result.push(student);
   }
-
-  // const readFile = () => {
-  //   var reader = new FileReader();
-  //   reader.onload = function (event) {
-  //     // The file's text will be printed here
-  //     setImage(event.target.result);
-  //   };
-  //   reader.readAsDataURL(file);
-  // };
 
   return (
     <GridContainer>
